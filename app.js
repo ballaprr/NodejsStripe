@@ -4,7 +4,6 @@ require('dotenv').config();
 require('express-async-errors');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-const connectDB = require('./db/connect');
 const productsRouter = require('./routes/products');
 
 const notFound = require('./middleware/not-found');
@@ -57,10 +56,13 @@ const port = process.env.PORT || 3000;
 
 const start = async () => {
     try {
-        await connectDB();
-        app.listen(port, console.log(`Server is running on port ${port}`));
+        app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+            console.log(`Environment: ${process.env.NODE_ENV}`);
+        });
     } catch (error) {
-        console.log(error);
+        console.error('Error starting server:', error);
+        process.exit(1);
     }
 }
 

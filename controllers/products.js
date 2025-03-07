@@ -87,8 +87,8 @@ const createCheckoutSession = async (req, res) => {
                     quantity: 1,
                 },
             ],
-            success_url: 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url: 'http://localhost:3000/cancel',
+            success_url: `${process.env.BASE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${process.env.BASE_URL}/cancel`,
         });
 
         res.status(200).json({ url: session.url });
