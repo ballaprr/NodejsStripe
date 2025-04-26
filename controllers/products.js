@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Product = require('../models/product');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
@@ -13,11 +12,6 @@ const client = new DynamoDBClient({
 });
 
 const docClient = DynamoDBDocumentClient.from(client);
-
-const getAllProductsStatic = async (req, res) => {
-    const products = await Product.find({});
-    res.status(200).json({ products, nbHits: products.length });
-}
 
 const getAllProducts = async (req, res) => {
     try {
@@ -180,7 +174,6 @@ const DynamoProduct = {
 
 module.exports = {
     getAllProducts,
-    getAllProductsStatic,
     getProduct,
     createCheckoutSession,
     DynamoProduct
