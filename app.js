@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 require('dotenv').config();
 require('express-async-errors');
@@ -10,6 +11,13 @@ const notFound = require('./middleware/not-found');
 const errorHandler = require('./middleware/error-handler'); 
 
 // middleware
+const corsOptions = {
+    origin: 'http://localhost:3000', // Replace with your frontend URL
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+};
+
+app.use(cors(corsOptions)); // Use the configured CORS options
 app.use(express.json());
 
 // success and cancel routes
