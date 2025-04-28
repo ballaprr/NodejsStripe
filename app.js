@@ -3,7 +3,6 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 require('express-async-errors');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const productsRouter = require('./routes/products');
 

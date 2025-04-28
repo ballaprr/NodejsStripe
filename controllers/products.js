@@ -28,9 +28,6 @@ const getProduct = async (req, res) => {
         console.log('Looking for product with ID:', id);
         console.log('ID type:', typeof id);
         
-        // First, let's see what IDs are available
-        const availableIds = await DynamoProduct.getAllIds();
-        console.log('Available IDs:', availableIds);
         
         const result = await DynamoProduct.findById(id);
         console.log('DynamoDB result:', result);
@@ -38,7 +35,6 @@ const getProduct = async (req, res) => {
         if (!result.Item) {
             return res.status(404).json({ 
                 msg: `No product with id: ${id}`,
-                availableIds: availableIds,
                 idType: typeof id
             });
         }
@@ -92,22 +88,6 @@ const createCheckoutSession = async (req, res) => {
 }
 
 const DynamoProduct = {
-    async create(product) {
-        const command = new PutCommand({
-            TableName: 'StoreProducts',
-            Item: {
-                id: `PROD_${Date.now()}`, // Simplified ID format
-                name: product.name,
-                price: product.price,
-                company: product.company,
-                rating: product.rating,
-                featured: product.featured,
-                createdAt: new Date().toISOString()
-            }
-        });
-        return await docClient.send(command);
-    },
-
     async findById(id) {
         try {
             console.log('findById - Input ID:', id);
@@ -160,15 +140,6 @@ const DynamoProduct = {
         });
         return await docClient.send(command);
     },
-
-    async getAllIds() {
-        const command = new ScanCommand({
-            TableName: 'StoreProducts',
-            ProjectionExpression: 'id'
-        });
-        const result = await docClient.send(command);
-        return result.Items.map(item => item.id);
-    }
 };
 
 module.exports = {
