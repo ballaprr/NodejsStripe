@@ -1,4 +1,3 @@
-const Product = require('../models/product');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { DynamoDBDocumentClient, PutCommand, GetCommand, ScanCommand, QueryCommand } = require('@aws-sdk/lib-dynamodb');

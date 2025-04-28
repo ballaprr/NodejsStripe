@@ -12,42 +12,16 @@ const errorHandler = require('./middleware/error-handler');
 
 // middleware
 const corsOptions = {
-    origin: 'http://localhost:3000', // Replace with your frontend URL
+    origin: 'http://nodeapp-demo-react.s3-website-us-east-1.amazonaws.com/', // Replace with your frontend URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)const c
 };
 
 app.use(cors(corsOptions)); // Use the configured CORS options
 app.use(express.json());
 
-// success and cancel routes
-app.get('/success', async (req, res) => {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    res.send(`
-        <html>
-            <body>
-                <h1>Payment Successful!</h1>
-                <h2>Thank you for your purchase.</h2>
-                <p>Session ID: ${session.id}</p>
-                <p>Amount Paid: $${session.amount_total / 100}</p>
-                <p>Payment Status: ${session.payment_status}</p>
-                <a href="/api/v1/products">Back to Products</a>
-            </body>
-        </html>
-    `);
-});
-
-app.get('/cancel', (req, res) => {
-    res.send(`
-        <html>
-            <body>
-                <h1>Payment Cancelled</h1>
-                <p>You can try the purchase again.</p>
-                <a href="/api/v1/products">Back to Products</a>
-            </body>
-        </html>
-    `);
-});
+const checkoutRouter = require('./routes/checkout');
+app.use('/', checkoutRouter);
 
 // routes
 app.get('/', (req, res) => {
